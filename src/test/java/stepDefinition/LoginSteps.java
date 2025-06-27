@@ -1,25 +1,34 @@
 package stepDefinition;
 
+import driverFactory.DriverFactory;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.junit.Assert;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
 import pages.LoginPage;
 
-import java.time.Duration;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+
 
 public class LoginSteps {
 
-     // Auto-setup ChromeDriver
-    WebDriver driver= new ChromeDriver();
+    private static final Logger logger = LogManager.getLogger(LoginSteps.class);
+    private WebDriver driver = DriverFactory.getDriver();
+    // ✅ Retrieve the thread-local driver
+
+    //System.out.println("Check if println works now");
 
     LoginPage login=new LoginPage(driver);
 
     @Given("User is on Login Page")
     public void user_is_on_login_page() {
+        logger.info("This is an info log message.");
+
         driver.get("https://automationexercise.com/login");
+
         System.out.println("User is on Login Page");
 
     }
