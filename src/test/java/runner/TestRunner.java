@@ -1,15 +1,17 @@
 package runner;
 
-import org.junit.runner.RunWith;
-import io.cucumber.junit.Cucumber;
-import io.cucumber.junit.CucumberOptions;
+import org.junit.platform.suite.api.ConfigurationParameter;
+import org.junit.platform.suite.api.IncludeEngines;
+import org.junit.platform.suite.api.SelectClasspathResource;
+import org.junit.platform.suite.api.Suite;
 
-@RunWith(Cucumber.class)
-@CucumberOptions(
-        features = "/Users/pratikshakale/IdeaProjects/Study/MyFramework/src/test/resources/features/",   // path to feature files
-        glue = {"stepDefinition", "myHooks"},
-        plugin = {"pretty", "html:target/cucumber-report.html"},
-        monochrome = true
-)
+import static io.cucumber.junit.platform.engine.Constants.*;
+
+@Suite
+@IncludeEngines("cucumber")
+@SelectClasspathResource("features") // path under src/test/resources
+@ConfigurationParameter(key = GLUE_PROPERTY_NAME, value = "stepDefinition,myHooks")
+@ConfigurationParameter(key = PLUGIN_PROPERTY_NAME, value = "pretty, html:target/cucumber-reports.html, com.aventstack.extentreports.cucumber.adapter.ExtentCucumberAdapter:")
+//@ConfigurationParameter(key = MONOCHROME_PROPERTY_NAME, value = "true")
 public class TestRunner {
 }

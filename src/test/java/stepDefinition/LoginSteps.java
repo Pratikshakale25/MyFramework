@@ -16,12 +16,15 @@ import org.apache.logging.log4j.Logger;
 public class LoginSteps {
 
     private static final Logger logger = LogManager.getLogger(LoginSteps.class);
-    private WebDriver driver = DriverFactory.getDriver();
-    // ✅ Retrieve the thread-local driver
+    private WebDriver driver;
+    private LoginPage login;
 
-    //System.out.println("Check if println works now");
+    // ✅ Constructor to initialize driver and page objects
+    public LoginSteps() {
+        this.driver = DriverFactory.getDriver(); // Gets the ThreadLocal driver
+        this.login = new LoginPage(driver);  // Initialize Page Object
+    }
 
-    LoginPage login=new LoginPage(driver);
 
     @Given("User is on Login Page")
     public void user_is_on_login_page() {
@@ -50,18 +53,25 @@ public class LoginSteps {
 
     @Then("user should be able to login")
     public void user_should_be_able_to_login() {
-
-        try {
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-        String actual=login.getPageTitle();
-        String expected="Automation Exercise";
-        Assert.assertEquals("Page Title verified",expected, actual);
-
+        Assert.assertTrue(login.loggedIn());
         System.out.println("User is able to login successfully");
+    }
 
+
+    @Then("error msg should be visible {string}")
+    public void errorMsgShouldBeVisible(String arg0) {
+        String actual= login.getErrorMsg();
+        String expected="Your email or password is incorrect!";
+        Assert.assertEquals(expected, actual);
+        System.out.println("Error: "+actual);
+
+    }
+
+    @When("User enters incorrect {string} or incorrect {string}")
+    public void userEntersIncorrectOrIncorrect(String username, String password) {
+        login.enterUsername(username);
+        login.enterPassword(password);
+        System.out.println("User enter incorrect username or password");
 
     }
 }
