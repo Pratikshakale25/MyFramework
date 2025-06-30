@@ -12,7 +12,7 @@ public class DriverFactory {
     private static final ThreadLocal<WebDriver> tlDriver = new ThreadLocal<>();
 
     public static void initDriver() {
-        String browser = ConfigReader.getProperty("browser");
+        String browser = ConfigReader.getDriver();
 
         switch (browser.toLowerCase()) {
             case "chrome":
